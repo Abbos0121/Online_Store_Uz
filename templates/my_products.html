@@ -1,0 +1,100 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Products</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="{% static 'images/for_site.png' %}" type="image/x-icon">
+    <style>
+        .navbar {
+            background-color: #DCDCDC;
+            padding: 50px 0;
+        }
+
+        .card-img-top {
+            width: 349px;
+            height: 400px;
+            max-height: 300px;
+        }
+
+        .nav-link {
+            position: absolute;
+            top: 20px;
+            left: 1200px;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .nav-link-home {
+            position: absolute;
+            top: 20px;
+            left: 710px;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .add {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            padding: 10px;
+        }
+        .row {
+            padding: 60px 0;
+        }
+        .bbasket {
+            position: absolute;
+            top: 400px;
+            left: 280px;
+        }
+        .fa-shopping-basket {
+            font-size: 2em;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h3 class="add">My Added Products</h3>
+        {% if products %}
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            {% if product.photo %}
+                                <img src="{{ product.photo.url }}" class="card-img-top" alt="{{ product.name }}">
+                            {% else %}
+                                <div class="no-photo-placeholder">
+                                    No Photo
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">Price: {{ product.price }} $</p>
+                                <form method="post" action="{% url 'delete_product' product.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                <a href="{% url 'basket' %}" class="bbasket">
+                                    <h6 class="fa fa-shopping-basket"></h6>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No products added yet.</p>
+        {% endif %}
+    </div>
+    <a class="nav-link" href="{% url 'add_product' %}">
+        <i class="fa fa-plus"></i> Add product
+    </a>
+    <a class="nav-link-home" href="{% url 'index' %}">
+        <i class="fa fa-home" aria-hidden="true"></i> HOME
+    </a>
+</body>
+</html>

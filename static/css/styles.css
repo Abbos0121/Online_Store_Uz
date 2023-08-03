@@ -1,0 +1,73 @@
+.gradient-custom {
+/* fallback for old browsers */
+background: #6a11cb;
+
+/* Chrome 10-25, Safari 5.1-6 */
+background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
+}
+
+h1.main {
+    color: red;
+}
+
+head {
+  background-color: #002137;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2.135cm;
+  width: 100%;
+}
+
+/* styles.css */
+.banner {
+  background-color: #008000;
+  padding: 10px;
+  text-align: center;
+}
+
+.banner h1 {
+  color: white;
+  font-size: 36px;
+}
+
+.banner p {
+  color: white;
+  font-size: 18px;
+}
+
+.categories {
+    position: fixed;
+    top: 200px;
+    left: 50px;
+}
+
+.product {
+    position: fixed;
+    top: 250px;
+    left: 50px;
+}
+
+
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+
+.add_product {
+  position: absolute;
+  color: red;
+}
+
+.card-img-top {
+    max-width: 100%;
+    height: auto;
+    width: 300px;
+    max-height: 200px;
+}

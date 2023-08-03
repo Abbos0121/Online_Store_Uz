@@ -1,0 +1,18 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logout</title>
+    <link rel="shortcut icon" href="{% static 'images/for_site.png' %}" type="image/x-icon">
+</head>
+<body>
+    <h1>Logout</h1>
+    <p>Are you sure you want to logout?</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="background-color: blue; color: white;">Logout</button>
+    </form>
+</body>
+</html>

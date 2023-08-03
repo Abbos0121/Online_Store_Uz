@@ -1,0 +1,59 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="{% static 'images/for_site.png' %}" type="image/x-icon">
+    <style>
+        .navbar {
+            background-color: #DCDCDC;
+            padding: 50px 0;
+        }
+        .searching {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            padding: 10px;
+        }
+        .nav-link-home {
+            position: absolute;
+            top: 30px;
+            left: 1350px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h4 class="searching">Search Results for "{{ query }}"</h4>
+        {% if results %}
+            <ul>
+                {% for product in results %}
+                    <li>
+                        <h4>{{ product.name }}</h4>
+                        <p>Description: {{ product.description }}</p>
+                        <p>Price: {{ product.price }}</p>
+                        {% if product.photo %}
+                            <img src="{{ product.photo.url }}" alt="{{ product.name }}" width="150">
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No products found.</p>
+        {% endif %}
+    </div>
+    <a class="nav-link-home" href="{% url 'index' %}">
+        <i class="fa fa-home" aria-hidden="true"></i> HOME
+    </a>
+</body>
+</html>
