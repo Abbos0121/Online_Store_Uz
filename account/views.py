@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-
+from django.contrib.sessions.models import Session
 from new_app.models import Product, BasketItem
 from .forms import CustomUserCreationForm, ProductForm
 from django.shortcuts import render, redirect, get_object_or_404
@@ -104,25 +104,50 @@ def basket_views(request):
     return render(request, 'basket.html', context)
 
 
+def calculate_subtotal(products_in_cart):
+    subtotal = 0
+    for product in products_in_cart:
+        subtotal += product.price
+    return subtotal
+
+
+def calculate_shipping():
+    shipping_cost = 10
+    return shipping_cost
+
+
 def add_to_basket(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    basket_item, created = BasketItem.objects.get_or_create(user=request.user, product=product)
+    product = get_object_or_404(Product, pk=product_id)
 
-    if not created:
-        basket_item.quantity += 1
-        basket_item.save()
+    basket = request.session.get('basket', [])
 
-    return redirect('basket')
+    basket.append(product.id)
+
+    request.session['basket'] = basket
+
+    context = {
+        'products_in_cart': Product.objects.filter(pk__in=basket),
+        'total': 1
+    }
+
+    return render(request, 'basket.html', context)
 
 
+@login_required
 def remove_from_basket(request, product_id):
-    basket_item = get_object_or_404(BasketItem, product__id=product_id, user=request.user)
+    user = request.user
+    product = get_object_or_404(Product, pk=product_id)
 
-    basket_item.delete()
+    try:
+        basket_item = BasketItem.objects.get(user=user, product=product)
+        basket_item.delete()
+    except BasketItem.DoesNotExist:
+        pass
 
     return redirect('basket')
 
 
+@login_required()
 def my_products(request):
 
     products = Product.objects.filter(user=request.user)
@@ -158,3 +183,22 @@ def delete_product(request, product_id):
 
     return redirect('my_products')
 
+
+def summ_views(request):
+    session = Session.objects.get(session_key=request.session.session_key)
+    products_in_cart = session.get('products_in_cart', [])
+
+    subtotal = calculate_subtotal(products_in_cart)
+    shipping = calculate_shipping()
+
+    total = subtotal + shipping
+    print(total)
+    print(subtotal)
+    context = {
+        'products_in_cart': products_in_cart,
+        'subtotal': subtotal,
+        'shipping': shipping,
+        'total': total
+    }
+
+    return render(request, 'basket.html', context)

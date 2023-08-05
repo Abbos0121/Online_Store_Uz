@@ -44,6 +44,7 @@ urlpatterns = [
     path('basket/', views.basket_views, name='basket'),
     path('remove/<int:product_id>/', views.remove_from_basket, name='remove_from_basket'),
     path('add_to_basket/<int:product_id>/', views.add_to_basket, name='add_to_basket'),
+    path('summ_views/<int:product_id>/', views.summ_views, name='summ_views'),
     path('', include('new_app.urls')),
 ]
 if settings.DEBUG:

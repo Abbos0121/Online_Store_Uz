@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$*d6-dnn8$!7t)5kd7f!q7(k0a)jptr8u$5ii*o_&c2-tk@(7+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'new_app',
     'bootstrap5',
     'account',
-    'telegram_bot',
 ]
 
 MIDDLEWARE = [
@@ -85,6 +84,17 @@ DATABASES = {
     }
 }
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'onlinestore',
+#        'USER': 'postgres',  # Или другое имя пользователя PostgreSQL
+#        'PASSWORD': 'postgres',
+#        'HOST': 'localhost',  # Или другой адрес хоста PostgreSQL
+#        'PORT': '5432',  # Оставьте пустым, если используется порт по умолчанию
+#    }
+#}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -119,7 +129,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
@@ -132,5 +142,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'  #для изображения
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')   #для изображения
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
-
+LOGIN_REDIRECT_URL = '/'

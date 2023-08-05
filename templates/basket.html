@@ -49,27 +49,31 @@
 
                 </div>
 
-                {% for product in products %}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">Price: ${{ product.price }}</p>
-                            <p class="card-text">Description: {{ product.description }}</p>
-                            {% if product.photo %}
+                <div class="row">
+                    {% for product in products_in_cart %}
+                    <!-- Здесь отображайте каждый продукт, который находится в корзине -->
+                    <div class="col-lg-7">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">Price: ${{ product.price }}</p>
+                                <p class="card-text">Description: {{ product.description }}</p>
+                                {% if product.photo %}
                                 <img src="{{ product.photo.url }}" alt="{{ product.name }}" class="img-fluid" style="width: 180px; height: 180px;">
-                            {% else %}
+                                <form method="post" action="{% url 'remove_from_basket' product.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                {% else %}
                                 <p>No photo available</p>
-                            {% endif %}
-
-                            <form class="remove_form" method="post" action="{% url 'remove_from_basket' product.id %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_id" value="{{ product.id }}">
-                                <button type="submit" class="btn btn-danger">Remove from basket</button>
-                            </form>
+                                {% endif %}
+                                <!-- Остальные поля продукта, которые вы хотите отобразить -->
+                            </div>
                         </div>
                     </div>
+                    {% endfor %}
+                </div>
 
-                {% endfor %}
 
               </div>
               <div class="col-lg-5">
@@ -97,7 +101,7 @@
                       </div>
 
                       <div class="form-outline form-white mb-4">
-                        <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+                        <input type="number" id="typeNumber" class="form-control form-control-lg" siez="17"
                           placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
                         <label class="form-label" for="typeText">Card Number</label>
                       </div>
@@ -105,7 +109,7 @@
                       <div class="row mb-4">
                         <div class="col-md-6">
                           <div class="form-outline form-white">
-                            <input type="text" id="typeExp" class="form-control form-control-lg"
+                            <input type="number" id="typeExp" class="form-control form-control-lg"
                               placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7" />
                             <label class="form-label" for="typeExp">Expiration</label>
                           </div>
@@ -124,23 +128,23 @@
                     <hr class="my-4">
 
                     <div class="d-flex justify-content-between">
-                      <p class="mb-2">Subtotal</p>
-                      <p class="mb-2">$0.00</p>
+                        <p class="mb-2">Subtotal</p>
+                        <p class="mb-2">${% for product in products_in_cart %}{{ product.price }}{% if not forloop.last %} + {% endif %}{% endfor %}</p>
                     </div>
 
                     <div class="d-flex justify-content-between">
                       <p class="mb-2">Shipping</p>
-                      <p class="mb-2">$0.00</p>
+                      <p class="mb-2">$10</p>
                     </div>
 
                     <div class="d-flex justify-content-between mb-4">
-                      <p class="mb-2">Total(Incl. taxes)</p>
-                      <p class="mb-2">$0.00</p>
+                        <p class="mb-2">Total(Incl. taxes)</p>
+                        <p class="mb-2">${{ total }}</p>
                     </div>
 
                     <button type="button" class="btn btn-info btn-block btn-lg">
                       <div class="d-flex justify-content-between">
-                        <span>$0.00</span>
+                        <p class="mb-2">${{ total }}</p>
                         <span>To pay <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
                       </div>
                     </button>
